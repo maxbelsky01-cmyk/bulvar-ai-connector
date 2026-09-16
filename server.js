@@ -52,6 +52,6 @@ app.get('/api/analysis',async(_,res)=>{try{
   const [leads,tasks]=await Promise.all([all('/api/v4/leads?with=contacts','leads'),all('/api/v4/tasks','tasks')]);
   const now=Math.floor(Date.now()/1000); const openTasks=tasks.filter(t=>!t.is_completed); const leadTaskIds=new Set(openTasks.filter(t=>t.entity_type==='leads').map(t=>Number(t.entity_id)));
   const activeLeads=leads.filter(l=>!l.is_deleted && ![142,143].includes(Number(l.status_id)));
-  res.json({generated_at:new Date().toISOString(),counts:{leads:leads.length,active_leads:activeLeads.length,open_tasks:openTasks.length,overdue_tasks:openTasks.filter(t=>t.complete_till<now).length,active_leads_without_open_task:activeLeads.filter(l=>!leadTaskIds.has(Number(l.id))).length},overdue_tasks:openTasks.filter(t=>t.complete_till<now),active_leads_without_open_task:activeLeads.filter(l=>!leadTaskIds.has(Number(l.id))});
+  res.json({generated_at:new Date().toISOString(),counts:{leads:leads.length,active_leads:activeLeads.length,open_tasks:openTasks.length,overdue_tasks:openTasks.filter(t=>t.complete_till<now).length,active_leads_without_open_task:activeLeads.filter(l=>!leadTaskIds.has(Number(l.id))).length},overdue_tasks:openTasks.filter(t=>t.complete_till<now),active_leads_without_open_task:activeLeads.filter(l=>!leadTaskIds.has(Number(l.id))});}
 }catch(e){res.status(500).json({error:e.message});}});
 app.listen(PORT,'0.0.0.0',()=>console.log(`Bulvar AI Connector listening on ${PORT}`));
