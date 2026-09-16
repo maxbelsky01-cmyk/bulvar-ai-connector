@@ -43,7 +43,7 @@ app.get('/oauth/callback',async(req,res)=>{
 });
 
 app.use('/api',requireApiKey);
-app.get('/api/account',async(_,res)=>{try{res.json(await amo('/api/v4/account?with=amojo_id,users_groups,task_types'));}catch(e){res.status(500).json({error:e.message});}});
+app.get('/amo-health',async(_,res)=>{try{await amo('/api/v4/account');res.json({amo_connected:true});}catch(e){res.status(500).json({amo_connected:false,error:e.message});}});app.get('/api/account',async(_,res)=>{try{res.json(await amo('/api/v4/account?with=amojo_id,users_groups,task_types'));}catch(e){res.status(500).json({error:e.message});}});
 app.get('/api/users',async(_,res)=>{try{res.json(await all('/api/v4/users','users'));}catch(e){res.status(500).json({error:e.message});}});
 app.get('/api/pipelines',async(_,res)=>{try{res.json(await all('/api/v4/leads/pipelines','pipelines'));}catch(e){res.status(500).json({error:e.message});}});
 app.get('/api/tasks',async(_,res)=>{try{res.json(await all('/api/v4/tasks','tasks'));}catch(e){res.status(500).json({error:e.message});}});
